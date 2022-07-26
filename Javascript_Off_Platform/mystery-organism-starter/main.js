@@ -13,11 +13,12 @@ const mockUpStrand = () => {
   return newStrand;
 };
 
-const pAequorFactory = (id, dnaArray) => {
+const pAequorFactory = (specimenNum, dna) => {
   return {
-    _specimenNum: id,
-    _dna: dnaArray,
+    _specimenNum: specimenNum,
+    _dna: dna,
     mutate() {
+
       // randomly select an index to mutate
       let randIndex = Math.floor(Math.random() * this._dna.length);
 
@@ -29,28 +30,23 @@ const pAequorFactory = (id, dnaArray) => {
       // select new base to replace old base
       let newBase = returnRandBase();
 
-      console.log(newBase);
 
-
-      while (baseToMutate === newBase) {
+      while (this._dna[randIndex] === newBase) {
         newBase = returnRandBase();
-        console.log(newBase);
       };
 
       // replace old base with a random base
-      this._dna.splice(randIndex, 1, newBase);
+      this._dna[randIndex] = newBase;
 
       return this._dna;
-    }
-}
+    },
+  }
 };
 
 
 let pAequor = pAequorFactory(1, mockUpStrand());
-let pAequor2 = pAequor.mutate();
-
-console.log(pAequor);
-console.log(pAequor2);
+console.log(pAequor._dna);
+console.log(pAequor.mutate());
 
 
 
