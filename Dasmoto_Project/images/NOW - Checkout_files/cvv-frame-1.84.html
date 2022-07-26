@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)https://core.spreedly.com/v1/embedded/cvv-frame-1.84.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>CVV Frame</title>
+    
+    <style type="text/css">
+      input {
+        background: transparent;
+        border-style: none;
+      }
+
+      body {
+        background: transparent;
+        margin: 0;
+      }
+
+      /* Don't show the number increment/decrement spinner in number fields */
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+
+      input:invalid,
+      textarea:invalid {
+        box-shadow: none;
+      }
+
+      input:hover {
+        cursor: text;
+      }
+
+      .visuallyhidden {
+        border: 0;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+      }
+
+      .input-outline-none {
+        outline: none;
+      }
+    </style>
+    <script>
+      var uniqueId = window.name.replace("spreedly-cvv-frame-", "");
+      var numberWindowName = "spreedly-number-frame-" + uniqueId;
+
+      window.notifyEvent = function(name, notification, addActiveField) {
+        var activeField = "";
+        if (addActiveField && document.hasFocus()) {
+          activeField = "cvv";
+        }
+        window.parent.postMessage(
+          uniqueId +
+            "notifyEvent( " +
+            name +
+            "): " +
+            notification +
+            ":" +
+            activeField,
+          "*"
+        );
+      };
+
+      window.onfocus = function() {
+        document.getElementById("cvv").focus();
+      };
+
+      var handleOnChange = function(e) {
+        if (!e) {
+          return
+        }
+        e.preventDefault();
+        notifyEvent("cvv", "change")
+      }
+
+      var handleKeyUp = function(e) {
+        if (!e) {
+          return;
+        }
+        if (e.keyCode === 13) {
+          e.preventDefault();
+          e.stopPropagation();
+          notifyEvent("cvv", "enter");
+        } else if (e.keyCode === 27) {
+          e.preventDefault();
+          e.stopPropagation();
+          notifyEvent("cvv", "escape");
+        } else if (e.keyCode === 38 || e.keyCode === 40) {
+          e.preventDefault();
+          e.stopPropagation();
+        } else if (cvvField.value.length > 4) {
+          cvvField.value = cvvField.value.substring(0, 4);
+        }
+      };
+      var handleKeyDown = function(e) {
+        if (!e) {
+          return;
+        }
+        if (e.keyCode === 9 && e.shiftKey) {
+          notifyEvent("cvv", "shiftTab");
+        } else if (e.keyCode === 9) {
+          notifyEvent("cvv", "tab");
+        } else if (e.keyCode === 27) {
+          e.preventDefault();
+          e.stopPropagation();
+          notifyEvent("cvv", "escape");
+        } else if (e.keyCode === 38 || e.keyCode === 40) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      };
+
+      var removeSelection = function() {
+        if (window.getSelection) {
+          window.getSelection().removeAllRanges();
+        }
+      };
+
+      var establishCommunication = function() {
+        try {
+          if (
+            window.parent.frames[numberWindowName] &&
+            window.parent.frames[numberWindowName].setUpCvv
+          ) {
+            window.parent.frames[numberWindowName].setUpCvv();
+            clearInterval(messageInterval);
+          }
+        } catch (err) {}
+      };
+
+      window.stopMessages = function() {
+        clearInterval(messageInterval);
+      };
+    </script>
+  </head>
+
+  <body data-new-gr-c-s-check-loaded="14.1068.0" data-gr-ext-installed="">
+    <form accept-charset="UTF-8" action="javascript:void(0);" id="cvv-form" onsubmit="return false;">
+      <label for="cvv" class="visuallyhidden" id="cvv_label">CVV</label>
+      <input inputmode="numeric" title="cvv number" type="tel" pattern="[0-9 \*]*" id="cvv" size="4" autocomplete="cc-csc" onblur="notifyEvent(&#39;cvv&#39;, &#39;blur&#39;, false);  removeSelection()" onfocus="notifyEvent(&#39;cvv&#39;, &#39;focus&#39;, false)" onmouseover="notifyEvent(&#39;cvv&#39;, &#39;mouseover&#39;, true)" onmouseout="notifyEvent(&#39;cvv&#39;, &#39;mouseout&#39;, true)" onkeyup="handleKeyUp(event)" onkeydown="handleKeyDown(event)" onchange="handleOnChange(event)" class="input-outline-none" style="width: 100%; box-sizing: border-box; font-size: 1rem; height: 26px; padding: 0px;">
+    </form>
+
+    <script>
+      messageInterval = setInterval(establishCommunication, 5);
+      cvvField = document.getElementById("cvv");
+      iOS = /^(iPhone|iPad|iPod)/.test(navigator.platform);
+      if (iOS) {
+        document.getElementById("cvv").classList.remove("input-outline-none");
+      } else {
+        document.getElementById("cvv").classList.add("input-outline-none");
+      }
+    </script>
+  
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
