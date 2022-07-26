@@ -25,8 +25,6 @@ const pAequorFactory = (specimenNum, dna) => {
       // select a base to be mutated
       let baseToMutate = this._dna[randIndex];
 
-      console.log(baseToMutate);
-
       // select new base to replace old base
       let newBase = returnRandBase();
 
@@ -40,13 +38,27 @@ const pAequorFactory = (specimenNum, dna) => {
 
       return this._dna;
     },
+    compareDNA(otherPAequor) {
+      let countEq = 0;
+
+      for (let i =0; i < this._dna.length; i++) {
+        if (this._dna[i] === otherPAequor._dna[i]) {
+          countEq++;
+        }
+      };
+      const percEqual = Math.floor((countEq / this._dna.length)*100);
+
+      console.log(`${this._specimenNum} and ${otherPAequor._specimenNum} have ${percEqual}% equal bases`);
+    }
   }
 };
 
 
 let pAequor = pAequorFactory(1, mockUpStrand());
-console.log(pAequor._dna);
-console.log(pAequor.mutate());
+let pAequor2 = pAequorFactory(2, mockUpStrand());
+
+pAequor.compareDNA(pAequor2);
+
 
 
 
