@@ -49,6 +49,20 @@ const pAequorFactory = (specimenNum, dna) => {
       const percEqual = Math.floor((countEq / this._dna.length)*100);
 
       console.log(`${this._specimenNum} and ${otherPAequor._specimenNum} have ${percEqual}% equal bases`);
+    },
+    willLikelySurvive() {
+      let countTotal = 0;
+      for (const element of this._dna) {
+        if (element === 'C' || element === 'G') {
+          countTotal++;
+        }
+      };
+      const percCG = Math.floor((countTotal / this._dna.length)*100);
+      if (percCG >= 60) {
+        return true;
+      } else {
+        return false;
+      };
     }
   }
 };
@@ -57,7 +71,7 @@ const pAequorFactory = (specimenNum, dna) => {
 let pAequor = pAequorFactory(1, mockUpStrand());
 let pAequor2 = pAequorFactory(2, mockUpStrand());
 
-pAequor.compareDNA(pAequor2);
+console.log(pAequor.willLikelySurvive());
 
 
 
