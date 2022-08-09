@@ -63,17 +63,40 @@ const pAequorFactory = (specimenNum, dna) => {
       } else {
         return false;
       };
+    },
+    complementStrand() {
+      let compStrand = [];
+      for (let element of this._dna) {
+        if (element === 'A') {
+          compStrand.push('T')
+        } else if (element === 'T') {
+          compStrand.push('A')
+        } else if (element === 'G') {
+          compStrand.push('C')
+        } else if (element === 'C') {
+          compStrand.push('G')
+        }
+      };
+      return compStrand;
     }
   }
 };
 
 
-let pAequor = pAequorFactory(1, mockUpStrand());
-let pAequor2 = pAequorFactory(2, mockUpStrand());
+let pAequoris = [];
 
-console.log(pAequor.willLikelySurvive());
+let counterValid = 1;
 
+while (counterValid <= 30) {
+  let pAequori = pAequorFactory(counterValid, mockUpStrand())
+  if (pAequori.willLikelySurvive) {
+    pAequoris.push(pAequori);
+    counterValid++;
+  };
+}
 
+console.log(pAequoris[1]._dna);
+console.log(pAequoris[1].complementStrand());
 
 
 
